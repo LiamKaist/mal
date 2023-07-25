@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+#Can use a regexp module in python 
+import regex
+#Reader class to navigate the abstract tree
+
+class Reader:
+    def __init__(self,tokens):
+        print("Init reader")
+        self.position = 0
+        self.tokenList = tokens
+
+    def next(self):
+        self.position = self.position + 1
+        return self.tokenList[self.position]
+
+    def peek(self):
+        return self.tokenList[self.position]
+
+    def read_form(self):
+            #Get the first token, ie the first token of the token list
+            tkn = self.peek()
+            #If the first token is a left parenthesis, read the rest of the token list until the closed parenthesis
+            match tkn :
+                case '(' :
+                    return self.read_list()
+                case _ :
+                    return self.read_atom()
+
+    def read_list(self):
+        list = []
+        m=self.read_form()
+        while (m != ')'):
+            list.append(m)
+            m = self.read_form()
+            next(self)
+        self.position = 0
+        return list
+
+    def read_atom(self):
+        tkn = self.peek()
+
+#read_str function that reads a string and creates a new Reader object
+
+def read_str(s):
+    #Tokenize string ie extract tokens (sub-strings here) and put them into a list
+    l = tokenize(s)
+    #Extracted list is stored in reader
+    reader = Reader(l)
+    #Let the reader read its own token list
+    reader.read_form()
+
+def tokenize(s):
+    #Use the regex library to tokenize the string

@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+def pr_str(malData):
+    stringRepr = ""
+
+    #Main switch which identifies whether the data is : a symbol OR a number OR a list
+    match str(type(malData)):
+        
+        case "<class 'list'>":
+            result = pr_str(malData)
+            stringRepr = result + " " + stringRepr 
+            stringRepr = "(" + stringRepr + ")"
+            return stringRepr
+            
+        case "<class 'int'>":
+            #Detected an integer
+            return str(malData)
+        
+        case "<class 'string'>":
+            return malData
+        case _:
+            return "Error"
